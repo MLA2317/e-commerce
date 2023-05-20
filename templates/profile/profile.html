@@ -1,5 +1,25 @@
 {% extends 'base.html' %}
 {% block content %}
 
+<form method="POST" enctype="multipart/form-data">
+        {% csrf_token %}
+        <div>
+            <label for="first_name">First Name</label>
+            <input name="first_name" class="form-control" id="first_name" type="text" placeholder="Enter your first name" value="{{ profile.user.first_name }}" required>
+        </div>
+        <div>
+            <label for="last_name">Last Name</label>
+            <input name="last_name" class="form-control" id="last_name" type="text" placeholder="Also your last name" value="{{ profile.user.last_name }}" required>
+        </div>
+        <label for="gender">Gender</label>
+        <select name="gender" class="form-select mb-0" id="gender"
+                aria-label="Gender select example">
+            <option selected>Gender</option>
+            {% for key, value in profile.GENDER_CHOICES %}
+                <option value="{{ key }}"
+                        {% if profile.gender == key %}selected{% endif %}>{{ value }}</option>
+            {% endfor %}
+        </select>
+    </form>
 
 {% endblock %}

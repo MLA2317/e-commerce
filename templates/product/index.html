@@ -13,8 +13,8 @@
                         <span>All Categories</span>
                     </div>
                     <ul>
-                        {% for categroy in categories %}
-                             <li><a href="#">{{ category.category }}</a></li>
+                        {% for category in categories %}
+                             <li><a href="/shop-grid/?cat={{ category }}">{{ category.title }}</a></li>
                         {% endfor %}
                     </ul>
                 </div>
@@ -58,7 +58,7 @@
                 {% for category in categories %}
                     <div class="col-lg-3">
                     <div class="categories__item set-bg" data-setbg="{{ category.image.url }}">
-                        <h5><a href="#">{{ category.category }}</a></h5>
+                        <h5><a href="{% url 'products:shop_grid' %}">{{ category.title }}</a></h5>
                     </div>
                 </div>
                 {% endfor %}
@@ -79,7 +79,7 @@
                     <ul>
                         <li class="active" data-filter="*">All</li>
                         {% for category in categories %}
-                            <li data-filter=".{{ category.normalize_category }}">{{ category.category }}</li>
+                            <li data-filter=".{{ category.normalize_category }}">{{ category }}</li>
                         {% endfor %}
                     </ul>
                 </div>
@@ -87,9 +87,10 @@
         </div>
         <div class="row featured__filter" id="product">
             {% for product in products %}
-                <div class="col-lg-3 col-md-4 col-sm-6 mix oranges fresh-meat">
-                <div class="featured__item">
-                    <div class="featured__item__pic set-bg" data-setbg="img/featured/feature-1.jpg">
+                 <div class="col-lg-3 col-md-4 col-sm-6 mix {{ product.category.normalize_category }}">
+                    <div class="featured__item">
+                    <div class="featured__item__pic set-bg" data-setbg="{{ product.product_image.first.image.url }}">
+                        <ul class="featured__item__pic__hover">
                          {% if request.user.is_authenticated %}
                             <li><a class="add-wishlist" data-product="{{ product.id }}">
                                 <i class="fa {% if product.id in  wlist_products_id %} fa-heart-circle-minus {% else %} fa-heart-circle-plus {% endif %}"></i>
@@ -105,7 +106,7 @@
                         <h5>UZS {{ product.price }}</h5>
                     </div>
                 </div>
-            </div>
+                </div>
             {% endfor %}
         </div>
     </div>

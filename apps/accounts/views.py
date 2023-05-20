@@ -4,6 +4,7 @@ from .models import Profile
 
 def profile(request):
     pf = Profile.objects.get(user=request.user)
+    print(pf)
     ctx = {
         'profile': pf
     }

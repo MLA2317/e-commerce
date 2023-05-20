@@ -12,7 +12,7 @@ class Timestamp(models.Model):
 
 class Category(Timestamp):
     title = models.CharField(max_length=21)
-    image = models.ImageField(upload_to='categories', null=True)
+    image = models.ImageField(upload_to='categories/', null=True)
 
     @property
     def normalize_category(self):
