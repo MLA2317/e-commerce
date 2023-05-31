@@ -7,6 +7,4 @@ urlpatterns = [
     # Api
     path('api/', include('accounts.api.urls'))
 
-    # api
-    # path('', profile, name='profile'),
 ]

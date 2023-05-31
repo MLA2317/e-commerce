@@ -6,6 +6,6 @@ class IsOwnerReadOnlyForAccount(permissions.BasePermission):
         if request.method in permissions.SAFE_METHODS:
             return True
 
-        return obj.username == request.user.username
+        return obj.email == request.user.email
 
 

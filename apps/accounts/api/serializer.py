@@ -76,7 +76,7 @@ class ResetPassword(serializers.ModelSerializer):
 
     class Meta:
         model = Account
-        fields = ('email',)
+        # fields = ('email',)
 
 
 class SetNewPassword(serializers.ModelSerializer):
