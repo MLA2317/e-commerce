@@ -18,13 +18,13 @@ class PostSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Post
-        fields = ['id', 'author', 'title', 'image', 'category', 'tag', 'content', 'created_at']
+        fields = ['id', 'author', 'title', 'image', 'category', 'tag', 'content', 'created_date']
 
 
 class PostCreateSerializer(serializers.ModelSerializer):
     class Meta:
         model = Post
-        fields = ['id', 'author', 'title', 'image', 'category', 'tag', 'content', 'created_at']
+        fields = ['id', 'author', 'title', 'image', 'category', 'tag', 'content', 'created_date']
 
     def create(self, validated_data):
         tag = validated_data.pop('tag', [])
