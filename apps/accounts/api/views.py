@@ -30,31 +30,31 @@ class AccountRegisterView(generics.GenericAPIView):
 
         # user info
         user_data = serializer.data
-        user = Account.objects.get(email=user_data['email'])
+        user = Account.objects.get(username=user_data['username'])
 
         # get refresh token
         token = RefreshToken.for_user(user)
 
         # activate account with email
         current_site = 'localhost:8000/'
-        relative_link = 'account/verify-email/'
+        relative_link = 'account/verify-username/'
         abs_url = f'http://' + current_site + relative_link + '?token=' + str(token.access_token)
-        email_body = f'Hi, {user.email} \n User link below to activate your email \n {abs_url}'
+        username_body = f'Hi, {user.username} \n User link below to activate your username \n {abs_url}'
         data = {
-            'to_email': user.email,
-            'email_subject': 'Activate email to Ogani Ecommerce',
-            'email_body': email_body
+            'to_username': user.username,
+            'username_subject': 'Activate username to Ogani Ecommerce',
+            'username_body': username_body
         }
         Util.send_email(data)
 
-        return Response({'success': True, 'message': 'Activate url was sent your email'}, status=status.HTTP_201_CREATED)
+        return Response({'success': True, 'message': data}, status=status.HTTP_201_CREATED)
 
 
 class EmailVerificationView(APIView):
     # http://127.0.0.1:8000/account/verify-email/?token={token}/
     serializer_class = EmailVerification
     permission_classes = (AllowAny,)
-    token_param_config = openapi.Parameter('token', in_=openapi.IN_QUERY, description='Verify email',
+    token_param_config = openapi.Parameter('token', in_=openapi.IN_QUERY, description='Verify username',
                                            type=openapi.TYPE_STRING)
 
     def get(self, request):
@@ -67,7 +67,7 @@ class EmailVerificationView(APIView):
                 user.is_active = True
                 user.save()
                 print(user)
-            return Response({'success': True, 'message': 'Email successfully activated'},
+            return Response({'success': True, 'message': 'Username successfully activated'},
                             status=status.HTTP_201_CREATED)
         except jwt.ExpiredSignatureError as e:  # Agar tokenni muddati tugagan bolsa shu hatolik chiqadi
             return Response({'success': False, 'message': f'Verification expired | {e.args}'},
@@ -83,7 +83,7 @@ class LoginView(generics.GenericAPIView):
 
     def post(self, request):
         serializer = self.serializer_class(data=request.data)
-        if serializer.is_valid:
+        if serializer.is_valid():
             return Response({'success': True, 'data': serializer.data}, status=status.HTTP_200_OK)
         return Response({'success': False, 'message': 'Credentials is in valid'}, status=status.HTTP_400_BAD_REQUEST)
 
@@ -93,7 +93,7 @@ class ResetPasswordView(generics.GenericAPIView):
     serializer_class = ResetPassword
 
     def post(self, request):
-        user = Account.objects.filter(email=request.data['email']).first()
+        user = Account.objects.filter(username=request.data['username']).first()
 
         if user:
             uidb64 = urlsafe_base64_encode(smart_bytes(user.id)) # bu url toplamga ozgatiruvchiga mos keluvchi simvollar a-z 0-9 + - _
@@ -162,7 +162,7 @@ class MyAccountView(generics.GenericAPIView):
     queryset = Account.objects.all()
     serializer_class = AccountSerializer
     permission_classes = (IsOwnerReadOnlyForAccount, IsAuthenticated)
-    lookup_field = 'email'
+    lookup_field = 'username'
 
 
 

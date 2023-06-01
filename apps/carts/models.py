@@ -1,5 +1,6 @@
 import uuid
 from django.contrib.auth.models import User
+from django.conf import settings
 from django.db import models
 from apps.products.models import Product
 
@@ -7,15 +8,15 @@ from apps.products.models import Product
 # Create your models here.
 
 class Wishlist(models.Model):
-    user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='wishlist')
+    user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name='wishlist')
     product = models.ForeignKey(Product, on_delete=models.CASCADE)
 
     def __str__(self):
-        return f'wishlist of {self.user.username} (id: {self.id})'
+        return f'wishlist of {self.user.email} (id: {self.id})'
 
 
 class Cart(models.Model):
-    clients = models.ForeignKey(User, on_delete=models.CASCADE, related_name='cart')
+    clients = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name='cart')
     is_ordered = models.BooleanField(default=False)
 
     @property
@@ -55,7 +56,7 @@ class Order(models.Model):
     )
     transaction_id = models.UUIDField(default=uuid.uuid4, unique=True, editable=False)
     cart = models.ForeignKey(Cart, on_delete=models.SET_NULL, null=True)
-    client = models.ForeignKey(User, on_delete=models.SET_NULL, null=True)
+    client = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.SET_NULL, null=True)
     phone = models.CharField(max_length=21)
     address = models.CharField(max_length=255)
     note = models.CharField(null=True, blank=True, max_length=255)

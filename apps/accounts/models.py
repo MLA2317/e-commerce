@@ -5,18 +5,18 @@ from rest_framework_simplejwt.tokens import RefreshToken
 
 
 class AccountManager(BaseUserManager):
-    def create_user(self, email, password=None, **extra_fields):
-        if email is None:
-            raise TypeError("Username did'nt come")
-        user = self.model(email=email, **extra_fields)
+    def create_user(self, username, password=None, **extra_fields):
+        if username is None:
+            raise TypeError("Email did'nt come")
+        user = self.model(username=username, **extra_fields)
         user.set_password(password)
         user.save(using=self._db)
         return user
 
-    def create_superuser(self, email, password=None, **extra_fields):
+    def create_superuser(self, username, password=None, **extra_fields):
         if not password:
             raise TypeError("Password didn't come")
-        user = self.create_user(email, password, **extra_fields)
+        user = self.create_user(username, password, **extra_fields)
         user.is_superuser = True
         user.is_active = True
         user.is_staff = True
@@ -25,7 +25,8 @@ class AccountManager(BaseUserManager):
 
 
 class Account(AbstractBaseUser, PermissionsMixin):
-    email = models.EmailField(unique=True, db_index=True)
+    username = models.CharField(unique=True, db_index=True)
+    email = models.EmailField()
     full_name = models.CharField(max_length=50, null=True)
     avatar = models.ImageField(upload_to='profile/', null=True, blank=True)
     bio = models.TextField()
@@ -35,16 +36,15 @@ class Account(AbstractBaseUser, PermissionsMixin):
     date_login = models.DateTimeField(auto_now=True, verbose_name='Last Login'),
     date_created = models.DateTimeField(auto_now_add=True, verbose_name='Created Date')
 
-    object = AccountManager
-    EMAIL_FIELD = 'email'
-    USERNAME_FIELD = 'email',
+    objects = AccountManager()
+    USERNAME_FIELD = 'username'
     REQUIRED_FIELDS = []
 
     def __str__(self):
         if self.full_name:
             return f"{self.full_name}"
         else:
-            return f"{self.email}"
+            return f"{self.username}"
 
     @property
     def tokens(self):

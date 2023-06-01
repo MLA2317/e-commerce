@@ -1,5 +1,6 @@
 from django.db import models
 from django.contrib.auth.models import User
+from django.conf import settings
 
 
 class Timestamp(models.Model):
@@ -63,9 +64,9 @@ class Rate(Timestamp):
         (4, 4),
         (5, 5),
     )
-    user = models.ForeignKey(User, on_delete=models.SET_NULL, null=True)
+    user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.SET_NULL, null=True)
     product = models.ForeignKey(Product, on_delete=models.CASCADE)
     rate = models.IntegerField(choices=RATE, default=0)
 
     def __str__(self):
-        return f'rate of {self.user.username}'
+        return f'rate of {self.user.email}'

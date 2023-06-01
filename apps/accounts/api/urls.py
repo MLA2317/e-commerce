@@ -10,5 +10,5 @@ urlpatterns = [
     path('set-password-confirm/<str:uidb64>/<str:token>/', views.SetPasswordConfirmView.as_view()),
     path('set-password-completed/', views.SetNewPasswordCompletedView.as_view()),
     path('change-password/<int:pk>/', views.ChangePasswordCompletedView.as_view()),
-    path('profile/<str:email>/', views.MyAccountView.as_view())
+    path('profile/<str:username>/', views.MyAccountView.as_view())
 ]

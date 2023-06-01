@@ -46,6 +46,14 @@ urlpatterns = [
     # allauth
     # path('accounts/', include('allauth.urls')),
 
+    #Api
+    # Api
+    path('api/', include('apps.accounts.api.urls')),
+    path('api/', include('apps.blogs.api.urls')),
+    path('api/', include('apps.carts.api.urls')),
+    path('api/', include('apps.products.api.urls')),
+    path('api/', include('apps.contact.api.urls')),
+
     # localhost
     path('', include('apps.products.urls', namespace='products')),
     path('carts/', include('apps.carts.urls', namespace='carts')),

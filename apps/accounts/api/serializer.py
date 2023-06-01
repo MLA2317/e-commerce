@@ -13,7 +13,7 @@ class RegisterSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Account
-        fields = ('id', 'email', 'full_name', 'avatar', 'password', 'password2')
+        fields = ('id', 'username', 'email', 'full_name', 'avatar', 'password', 'password2')
 
     def validate(self, attrs):
         password = attrs.get('password')
@@ -30,25 +30,25 @@ class RegisterSerializer(serializers.ModelSerializer):
 
 
 class LoginSerializer(serializers.ModelSerializer):
-    email = serializers.EmailField(max_length=50, required=True)
-    password = serializers.CharField(max_length=60, required=True)
+    username = serializers.CharField(max_length=50, required=True)
+    password = serializers.CharField(max_length=60, write_only=True)
     tokens = serializers.SerializerMethodField(read_only=True)
 
     def get_tokens(self, obj):
-        user = Account.objects.filter(email=obj.get('email')).first()
+        user = Account.objects.filter(username=obj.get('username')).first()
         return user.tokens
 
     class Meta:
         model = Account
-        fields = ('email', 'password', 'tokens')
+        fields = ('username', 'password', 'tokens')
 
     def validate(self, attrs):
-        email = attrs.get('email')
+        username = attrs.get('username')
         password = attrs.get('password')
-        user = authenticate(email=email, password=password)
+        user = authenticate(username=username, password=password)
         if not user:
             raise AuthenticationFailed({
-                'message': 'Email or password is not correct'
+                'message': 'Username or password is not correct'
             })
         if not user.is_active:
             raise AuthenticationFailed({
@@ -57,7 +57,7 @@ class LoginSerializer(serializers.ModelSerializer):
 
         data = {
             'success': True,
-            'email': user.email,
+            'username': user.username,
             'tokens': user.tokens,
         }
         return data
@@ -72,11 +72,11 @@ class EmailVerification(serializers.ModelSerializer):
 
 
 class ResetPassword(serializers.ModelSerializer):
-    email = serializers.EmailField()
+    username = serializers.CharField()
 
     class Meta:
         model = Account
-        # fields = ('email',)
+        fields = ('username',)
 
 
 class SetNewPassword(serializers.ModelSerializer):
@@ -137,7 +137,7 @@ class ChangeNewPassword(serializers.ModelSerializer):
 class AccountSerializer(serializers.ModelSerializer):
     class Meta:
         model = Account
-        fields = ('id', 'email', 'full_name', 'avatar', 'bio', 'is_superuser', 'is_staff', 'is_active', 'date_login')
+        fields = ('id', 'username', 'email', 'full_name', 'avatar', 'bio', 'is_superuser', 'is_staff', 'is_active', 'date_login')
 
 
 
