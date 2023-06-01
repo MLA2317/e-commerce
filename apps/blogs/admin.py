@@ -9,6 +9,6 @@ class TagAdmin(admin.ModelAdmin):
 
 @admin.register(Post)
 class PostAdmin(admin.ModelAdmin):
-    list_display = ['id', 'author', 'title', 'image', 'category', 'tags', 'author_name', 'author_image', 'created_date']
+    list_display = ['id', 'author', 'title', 'image', 'category', 'author_name', 'author_image', 'created_date']
 
 
