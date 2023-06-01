@@ -48,11 +48,11 @@ urlpatterns = [
 
     #Api
     # Api
-    path('api/', include('apps.accounts.api.urls')),
-    path('api/', include('apps.blogs.api.urls')),
-    path('api/', include('apps.carts.api.urls')),
-    path('api/', include('apps.products.api.urls')),
-    path('api/', include('apps.contact.api.urls')),
+    path('account/api/', include('apps.accounts.api.urls')),
+    path('blog/api/', include('apps.blogs.api.urls')),
+    path('carts/api/', include('apps.carts.api.urls')),
+    path('product/api/', include('apps.products.api.urls')),
+    path('contact/api/', include('apps.contact.api.urls')),
 
     # localhost
     path('', include('apps.products.urls', namespace='products')),
