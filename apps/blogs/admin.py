@@ -2,8 +2,13 @@ from django.contrib import admin
 from .models import Tag, Post
 
 
-admin.site.register(Tag)
-admin.site.register(Post)
+@admin.register(Tag)
+class TagAdmin(admin.ModelAdmin):
+    list_display = ['id', 'title']
 
 
-# Register your models here.
+@admin.register(Post)
+class PostAdmin(admin.ModelAdmin):
+    list_display = ['id', 'author', 'title', 'image', 'category', 'tags', 'author_name', 'author_image', 'created_date']
+
+
