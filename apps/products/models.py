@@ -69,4 +69,4 @@ class Rate(Timestamp):
     rate = models.IntegerField(choices=RATE, default=0)
 
     def __str__(self):
-        return f'rate of {self.user.email}'
+        return f'rate of {self.user.username}'
