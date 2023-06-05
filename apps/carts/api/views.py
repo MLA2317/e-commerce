@@ -39,19 +39,23 @@ class AddToCartCreateApi(views.APIView):
         product = Product.objects.filter(id=pid).first()
         my_cart, new_cart = Cart.objects.get_or_create(clients=user, is_ordered=False)
         data = None
-        if my_cart:
-            CartItem.objects.create(product=product, cart=my_cart)
-            data = {
-                'success': True,
-                'product': product.nam,
-            }
-        if new_cart:
-            CartItem.objects.create(product=product, cart=new_cart)
-            data = {
-                'success': True,
-                'product': product.name
-            }
-        return Response(data, status=status.HTTP_201_CREATED)
+        if product:
+            if my_cart:
+                CartItem.objects.create(product=product, cart=my_cart)
+                data = {
+                    'success': True,
+                    'product': product.name
+                }
+            if new_cart:
+                CartItem.objects.create(product=product, cart=new_cart)
+                data = {
+                    'success': True,
+                    'product': product.name
+                }
+            return Response(data, status=status.HTTP_201_CREATED)
+
+        else:
+            return Response({'success': False, 'message': "Mahsulot to'pilmadi"}, status=status.HTTP_404_NOT_FOUND)
 
 
 class MyCartListApi(generics.ListAPIView):
