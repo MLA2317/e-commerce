@@ -15,11 +15,11 @@ class ProductImageSerializer(serializers.ModelSerializer):
 
 
 class ProductSerializer(serializers.ModelSerializer):
-    product_images = ProductImageSerializer(many=True)
+    product_image = ProductImageSerializer(many=True)
 
     class Meta:
         model = Product
-        fields = ('id', 'name', 'categories', 'price', 'views', 'get_mid_rate', 'description', 'product_images')
+        fields = ('id', 'name', 'categories', 'price', 'views', 'get_mid_rate', 'description', 'product_image')
 
 
 class RateSerializer(serializers.ModelSerializer):
