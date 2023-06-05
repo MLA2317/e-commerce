@@ -43,7 +43,7 @@ class AddToCartCreateApi(views.APIView):
             CartItem.objects.create(product=product, cart=my_cart)
             data = {
                 'success': True,
-                'product': product.name,
+                'product': product.nam,
             }
         if new_cart:
             CartItem.objects.create(product=product, cart=new_cart)
