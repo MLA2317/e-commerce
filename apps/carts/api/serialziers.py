@@ -14,7 +14,7 @@ class WishlistSerializer(serializers.ModelSerializer):
 
 
 class WishlistCreateSerializer(serializers.ModelSerializer):
-    user_username = serializers.CharField(source='user_username', read_only=True)
+    user_username = serializers.CharField(source='user.username', read_only=True)
 
     class Meta:
         model = Wishlist
